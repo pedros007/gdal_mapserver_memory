@@ -8,6 +8,10 @@ This only started happening after I built MapServer with GDAL > 2.2.4
 (tested with 2.3.0, 2.3.2 & 2.4.1 and MapServer-7.0.7 and
 MapServer-7.2.2). This repo is an attempt to deomonstrate the problem.
 
+## MapServer-7.2.2 with GDAL-2.2.4 
+
+Lower memory usage than MapServer-7.2.2 built with GDAL >= 2.3.0
+
 1. Build MapServer with gdal-2.2.4: ```docker build -t gdal_mapserver_memory:2.2.4 -f Dockerfile2.2.4 .```
 1. Start MapServer: ```docker run --rm -it -p 8224:80 --name gdal2.2.4 gdal_mapserver_memory:2.2.4```
 2. In a separate shell, watch the memory utilization of docker: ```docker stats gdal2.2.4```
@@ -15,6 +19,11 @@ MapServer-7.2.2). This repo is an attempt to deomonstrate the problem.
 4. Request a map tile: http://localhost:8224/mapserv?LAYERS=my_layer&FORMAT=image%2Fpng&MAP=/app/mapfiles/indonesian_redcross.map&TRANSPARENT=true&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A3857&BBOX=13894417.251632,-1013249.2468073,13895028.747858,-1012637.7505811&WIDTH=512&HEIGHT=512
 5. Note memory usage of about 49 MB
 6. After serving many different WMS requests, memory usage stays around 500 MB.
+
+
+## MapServer-7.2.2 with GDAL-2.3.0
+
+High memory usage than MapServer-7.2.2 built with GDAL <= 2.2.4
 
 1. Build MapServer with gdal-2.3.0: ```docker build -t gdal_mapserver_memory:2.3.0 -f Dockerfile2.3.0 .```
 1. Start MapServer: ```docker run --rm -it -p 8230:80 --name gdal2.2.4 gdal_mapserver_memory:2.2.4```

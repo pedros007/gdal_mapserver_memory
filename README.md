@@ -1,0 +1,1 @@
+# gdal_mapserver_memory

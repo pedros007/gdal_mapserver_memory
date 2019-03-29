@@ -1,0 +1,70 @@
+MAP
+    OUTPUTFORMAT
+        NAME                                  png24
+        DRIVER                                "AGG/PNG"
+        MIMETYPE                              "image/png"
+        IMAGEMODE                             RGB
+        EXTENSION                             "png"
+    END
+
+    IMAGETYPE PNG24
+    IMAGECOLOR 255 255 255
+
+    CONFIG "MS_ERRORFILE"                     "stderr"
+    CONFIG "CPL_VSIL_CURL_ALLOWED_EXTENSIONS" ".tif .zip" # .shp .shx .dbf .qix .cpg .prj
+    CONFIG "GDAL_DISABLE_READDIR_ON_OPEN"     "YES"
+    CONFIG "CPL_VSIL_CURL_CACHE_SIZE" "0"
+    CONFIG "GDAL_CACHEMAX" "0"
+    CONFIG "VSI_CACHE"                        "FALSE"
+    #CONFIG "VSI_CACHE_SIZE"                   "25000000"
+
+    EXTENT -180 -90 180 90
+
+    # Set the output projection of all layers within this mapfile:
+    PROJECTION
+        # Performance optimization: Instead of specifying an EPSG code, set all
+        # the Proj4 parameters directly.
+        # http://mapserver.org/optimization/mapfile.html#projections
+        # Geographic (EPSG:4326): http://spatialreference.org/ref/epsg/wgs-84/
+        # Web Mercator (EPSG:3857): http://spatialreference.org/ref/sr-org/6864/
+        "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+    END
+
+    NAME "demo_wms"
+
+    WEB
+        METADATA
+            "ows_title"                       "mosaics"
+            "ows_onlineresource"              "https://localhost:8224/mapserv?MAP=/app/mapfiles/indonesian_redcross.map"
+            "ows_srs"                         "EPSG:4326 EPSG:3857 EPSG:900913"
+            "ows_enable_request"              "*"
+            "wms_feature_info_mime_type"      "text/html"
+            "wfs_getfeature_formatlist"       "ogrgml,geojson"
+        END
+    END
+
+    MAXSIZE 4096
+
+        LAYER
+                NAME my_layer
+                TYPE RASTER
+                METADATA
+                        "ows_title" "My Layer"
+                        "ows_srs" "EPSG:4326 EPSG:3857 EPSG:900913"
+                END
+
+		# Imagery from https://www.cogeo.org/qgis-tutorial.html
+		#DATA "/vsicurl/http://oin-hotosm.s3.amazonaws.com/59d33df023c8440011d7b26d/0/b378087a-c2a5-43a0-abec-71fcfb051150.tif"
+		DATA "/vsicurl/https://s3.amazonaws.com/pschmitt-test-public/b378087a-c2a5-43a0-abec-71fcfb051150_cog.tif"
+		EXTENT 697942.657 8993507.027 705507.892 9001038.704
+		STATUS OFF
+
+                # May fix artifacts when reprojecting on the fly to 3857
+                PROCESSING "RESAMPLE=BILINEAR"
+                # Projection of the data for this layer
+                PROJECTION
+                        # proj4 config for +init=epsg:32751  http://spatialreference.org/ref/epsg/wgs-84-utm-zone-51s/
+                        "+proj=utm +zone=51 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+                END
+        END
+END # mapfile

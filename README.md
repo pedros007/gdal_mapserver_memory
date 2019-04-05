@@ -77,8 +77,7 @@ docker run --rm gdal_mapserver_memory:2.2.4 sh -c 'time -v /usr/local/bin/mapser
 ## gdal-2.3.0
 
 ```bash
-docker run --rm gdal_mapserver_memory:2.3.0 sh -c 'valgrind /usr/local/bin/mapserv QUERY_STRING="LAYERS=my_layer&FORMAT=image%2Fpng&MAP=/app/mapfiles/indonesian_redcross.map&TR
-> ANSPARENT=true&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A3857&BBOX=13894417.251632,-1013249.2468073,13895028.747858,-1012637.7505811&WIDTH=512&HEIGHT=512" > /dev/null'
+docker run --rm gdal_mapserver_memory:2.3.0 sh -c 'valgrind /usr/local/bin/mapserv QUERY_STRING="LAYERS=my_layer&FORMAT=image%2Fpng&MAP=/app/mapfiles/indonesian_redcross.map&TRANSPARENT=true&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A3857&BBOX=13894417.251632,-1013249.2468073,13895028.747858,-1012637.7505811&WIDTH=512&HEIGHT=512" > /dev/null'
 ==8== Memcheck, a memory error detector
 ==8== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
 ==8== Using Valgrind-3.12.0.SVN and LibVEX; rerun with -h for copyright info

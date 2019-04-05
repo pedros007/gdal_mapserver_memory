@@ -10,13 +10,30 @@ MAP
     IMAGETYPE PNG24
     IMAGECOLOR 255 255 255
 
+    # Debugging/logging things
     CONFIG "MS_ERRORFILE"                     "stderr"
+    # CONFIG "MS_ERRORFILE"                     "/var/log/mapserver_error.log"
+    CONFIG "CPL_DEBUG" "ON"
+    CONFIG "CPL_CURL_VERBOSE" "ON"
+    # DEBUG 5
+
+    # Performance improving options
     CONFIG "CPL_VSIL_CURL_ALLOWED_EXTENSIONS" ".tif .zip" # .shp .shx .dbf .qix .cpg .prj
     CONFIG "GDAL_DISABLE_READDIR_ON_OPEN"     "YES"
-    CONFIG "CPL_VSIL_CURL_CACHE_SIZE" "0"
-    CONFIG "GDAL_CACHEMAX" "0"
-    CONFIG "VSI_CACHE"                        "FALSE"
-    #CONFIG "VSI_CACHE_SIZE"                   "25000000"
+
+    # Needs curl >= 7.33 built with nghttp2
+    # CONFIG "GDAL_HTTP_VERSION"	"2TLS"
+    # CONFIG "GDAL_HTTP_MULTIPLEX"	"NO"
+
+    # This setting seems to fix the problem and results in a much lower memory footprint!
+    # CONFIG "GDAL_HTTP_MULTIRANGE"	"SERIAL"
+
+    # cache options
+    CONFIG "CPL_VSIL_CURL_NON_CACHED"	"/vsicurl/https://s3.amazonaws.com"
+    CONFIG "CPL_VSIL_CURL_CACHE_SIZE"	"0"
+    CONFIG "GDAL_CACHEMAX"		"0"
+    CONFIG "VSI_CACHE"			"FALSE"
+    CONFIG "VSI_CACHE_SIZE"		"0"
 
     EXTENT -180 -90 180 90
 
@@ -66,5 +83,7 @@ MAP
                         # proj4 config for +init=epsg:32751  http://spatialreference.org/ref/epsg/wgs-84-utm-zone-51s/
                         "+proj=utm +zone=51 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
                 END
+                # DEBUG 5
+                PROCESSING "CLOSE_CONNECTION=ALWAYS"
         END
 END # mapfile

@@ -1,5 +1,7 @@
 This repo provides an example for [a question on the mapserver-users mailing list](https://lists.osgeo.org/pipermail/mapserver-users/2019-March/081076.html).
 
+*Update* Problem solved... See [discussion of `GDAL_HTTP_MULTIRANGE` on the mailing list](https://lists.osgeo.org/pipermail/mapserver-users/2019-April/081121.html)
+
 # GDAL/MapServer Memory Utilization
 
 I run MapServer in a Docker container. I noticed its memory
